@@ -67,7 +67,7 @@ Resources:
       KeyName: nd9990_keypair
       SecurityGroups:
         - Ref: WebServerSecGroup
-      InstanceType: t3.medium
+      InstanceType: t3.small
       BlockDeviceMappings:
         - DeviceName: "/dev/sdk"
           Ebs:
@@ -80,8 +80,8 @@ Resources:
             !Sub "${EnvironmentName}-PRIV-NETS"
       LaunchConfigurationName:
         Ref: WebAppLaunchConfig
-      MinSize: '3'
-      MaxSize: '5'
+      MinSize: '4'
+      MaxSize: '6'
       TargetGroupARNs:
         - Ref: WebAppTargetGroup
   WebAppLB:
@@ -122,7 +122,7 @@ Resources:
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 8
       HealthyThresholdCount: 2
-      Port: 8080
+      Port: 80
       Protocol: HTTP
       UnhealthyThresholdCount: 5
       VpcId:
