@@ -131,8 +131,7 @@ Resources:
           Fn::Sub: "${EnvironmentName}-VPCID"
 
 
-  #Outputs:
-  # This is also optional.
-  # Bonus points for useful outputs!
-  # for example, if you create a Load Balancer
-  # it's nice to output the URL to it here, so that we don't have to go to the console to get it.
+  Outputs:
+    LBURL:
+      Description: URL from the Load Balancer
+      Value: !Join [ "", ["http://" , !GetAtt WebAppLB.DNSName ]]
