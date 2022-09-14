@@ -31,6 +31,7 @@ Resources:
           FromPort: 80
           ToPort: 80
           CidrIp: 0.0.0.0/0
+
   WebServerSecGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -40,8 +41,8 @@ Resources:
           !Sub "${EnvironmentName}-VPCID"
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 8080
-          ToPort: 8080
+          FromPort: 80
+          ToPort: 80
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: 22
@@ -61,10 +62,9 @@ Resources:
           sudo apt-get update -y
           sudo apt-get install apache2 -y
           sudo systemctl start apache2.service
-      # ToDo: AMI ID of Ubuntu Linux machine. Too get one, try creating a VM from the web console.
-      ImageId: ami-0747bdcabd34c712a
-      # ToDo: Change the key-pair name, as applicable to you.
-      KeyName: nd9990_keypair
+          cd /var/www/html
+          echo "Udacity Demo Web Server Up and Running!" > index.html
+      ImageId: ami-0729e439b6769d6ab
       SecurityGroups:
         - Ref: WebServerSecGroup
       InstanceType: t3.small
@@ -81,9 +81,10 @@ Resources:
       LaunchConfigurationName:
         Ref: WebAppLaunchConfig
       MinSize: '4'
-      MaxSize: '6'
+      MaxSize: '8'
       TargetGroupARNs:
         - Ref: WebAppTargetGroup
+
   WebAppLB:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -129,7 +130,8 @@ Resources:
         Fn::ImportValue:
           Fn::Sub: "${EnvironmentName}-VPCID"
 
-Outputs:
+
+  #Outputs:
   # This is also optional.
   # Bonus points for useful outputs!
   # for example, if you create a Load Balancer
